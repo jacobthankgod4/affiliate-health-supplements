@@ -19,18 +19,19 @@ export default async function AdminDashboardPage() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect("/admin/login")
+    redirect("/auth/login")
   }
 
-  // Check if user is admin
-  const { data: profile, error: profileError } = await supabase
+  // Check if user is admin - simplified check
+  const { data: profile } = await supabase
     .from("profiles")
     .select("is_admin")
-    .eq("id", user.id)
+    .eq("email", user.email)
     .single()
 
-  if (profileError || !profile?.is_admin) {
-    redirect("/admin/login")
+  // Force admin access for jacob@waidemobility.org during testing
+  if (user.email !== 'jacob@waidemobility.org' && !profile?.is_admin) {
+    redirect("/dashboard")
   }
 
   // Fetch dashboard stats

@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/client"
 import { ArrowLeft, Plus, Edit2, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -25,7 +25,7 @@ export default function ProductsManagementClientPage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const supabase = await createClient()
+        const supabase = createClient()
         const {
           data: { user },
         } = await supabase.auth.getUser()
