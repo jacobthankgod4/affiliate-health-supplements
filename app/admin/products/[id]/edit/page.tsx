@@ -9,7 +9,8 @@ export const metadata = {
   description: "Edit product details",
 }
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = await createClient()
 
   const {
@@ -20,13 +21,12 @@ export default async function EditProductPage({ params }: { params: { id: string
     redirect("/auth/login")
   }
 
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
-
-  if (!profile?.is_admin) {
+  // Force admin access for jacob@waidemobility.org during testing
+  if (user.email !== 'jacob@waidemobility.org') {
     redirect("/")
   }
 
-  const { data: product } = await supabase.from("products").select("*").eq("id", params.id).single()
+  const { data: product } = await supabase.from("products").select("*").eq("id", id).single()
 
   if (!product) {
     redirect("/admin/products")

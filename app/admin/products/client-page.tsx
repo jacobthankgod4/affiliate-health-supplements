@@ -131,7 +131,7 @@ export default function ProductsManagementClientPage() {
                       </div>
                       <div className="flex gap-2">
                         <Link href={`/admin/products/${product.id}/edit`}>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={() => console.log('Edit clicked for product:', product.id, 'URL:', `/admin/products/${product.id}/edit`)}>
                             <Edit2 size={16} />
                           </Button>
                         </Link>
