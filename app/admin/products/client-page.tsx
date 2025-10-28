@@ -1,6 +1,6 @@
 "use client"
 
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/client"
@@ -18,6 +18,7 @@ interface Product {
 }
 
 export default function ProductsManagementClientPage() {
+  const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -31,14 +32,14 @@ export default function ProductsManagementClientPage() {
         } = await supabase.auth.getUser()
 
         if (!user) {
-          redirect("/admin/login")
+          router.push("/admin/login")
           return
         }
 
         const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
 
         if (!profile?.is_admin) {
-          redirect("/admin/login")
+          router.push("/admin/login")
           return
         }
 
