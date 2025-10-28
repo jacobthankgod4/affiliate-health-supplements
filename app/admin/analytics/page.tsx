@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/server"
-import { ArrowLeft, TrendingUp, BarChart3, Users, Zap } from "lucide-react"
+import { ArrowLeft, TrendingUp, BarChart3, Users, Zap, Upload } from "lucide-react"
 import Link from "next/link"
 
 export const metadata = {
@@ -80,10 +80,20 @@ export default async function AnalyticsPage() {
               <ArrowLeft size={16} />
             </Button>
           </Link>
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl font-bold text-foreground">Analytics Dashboard</h1>
             <p className="text-sm text-muted-foreground">Track affiliate performance and conversions</p>
           </div>
+          <Button 
+            onClick={async () => {
+              await fetch('/api/sheets/sync', { method: 'POST', body: JSON.stringify({ type: 'analytics' }) })
+              alert('Data synced to Google Sheets!')
+            }}
+            className="gap-2"
+          >
+            <Upload size={16} />
+            Sync to Sheets
+          </Button>
         </div>
       </header>
 

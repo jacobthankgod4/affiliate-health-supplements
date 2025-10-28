@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { PaymentCheckout } from "@/components/payment-checkout"
 import Link from "next/link"
 import { ArrowLeft, Trash2, Loader2, ShoppingCart } from "lucide-react"
 
@@ -195,9 +196,14 @@ export default function CartPage() {
                       <span>${(cartTotal * 1.1).toFixed(2)}</span>
                     </div>
                   </div>
-                  <Button className="w-full" size="lg">
-                    Proceed to Checkout
-                  </Button>
+                  <PaymentCheckout 
+                    items={cartItems.map(item => ({
+                      id: item.products?.id || '',
+                      name: item.products?.name || '',
+                      price: item.products?.price || 0,
+                      quantity: item.quantity
+                    }))}
+                  />
                   <Link href="/products" className="block">
                     <Button variant="outline" className="w-full bg-transparent">
                       Continue Shopping

@@ -21,6 +21,8 @@ export function BlogPostForm() {
     featured_image_url: "",
     published: false,
   })
+  const [aiPrompt, setAiPrompt] = useState("")
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -28,6 +30,26 @@ export function BlogPostForm() {
       ...prev,
       [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }))
+  }
+
+  const generateContent = async () => {
+    if (!aiPrompt.trim()) return
+    setIsGenerating(true)
+    try {
+      const response = await fetch('/api/ai/generate-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: aiPrompt, type: 'blog' })
+      })
+      const data = await response.json()
+      if (data.content) {
+        setFormData(prev => ({ ...prev, content: data.content }))
+      }
+    } catch (error) {
+      console.error('AI generation error:', error)
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,6 +118,21 @@ export function BlogPostForm() {
               className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
               rows={3}
             />
+          </div>
+
+          <div>
+            <Label htmlFor="ai-prompt">AI Content Generator</Label>
+            <div className="flex gap-2">
+              <Input
+                id="ai-prompt"
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                placeholder="Describe the content you want to generate..."
+              />
+              <Button type="button" onClick={generateContent} disabled={isGenerating}>
+                {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : "Generate"}
+              </Button>
+            </div>
           </div>
 
           <div>
