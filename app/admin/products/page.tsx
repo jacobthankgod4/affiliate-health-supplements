@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Plus } from "lucide-react"
 import ProductsList from "./products-list"
+import { AliExpressImport } from "@/components/aliexpress-import"
 
 export const metadata = {
   title: "Manage Products | Admin",
@@ -42,6 +43,9 @@ export default async function ProductsManagementPage() {
       </header>
       <main className="p-6">
         <div className="mx-auto max-w-7xl">
+          <div className="mb-6">
+            <AliExpressImport />
+          </div>
           <ProductsList products={products || []} />
         </div>
       </main>
