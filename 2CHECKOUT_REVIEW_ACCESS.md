@@ -82,9 +82,22 @@
 - **Business Address:** [Your business address]
 - **Phone:** [Your business phone]
 
-## Testing Instructions
+## 2Checkout Account Access
+**For 2Checkout Review Team Internal Use:**
+- **2Checkout Login Email:** [Your 2Checkout account email]
+- **2Checkout Login Password:** [Your 2Checkout account password]
+- **Merchant Account ID:** [Your merchant ID]
+- **Account Type:** [Sandbox/Production]
+
+## Setup Instructions (For Developer)
+1. Deploy app to Vercel with all environment variables
+2. Run database setup: Copy `scripts/demo/setup-complete-demo.sql` into Supabase SQL Editor
+3. Run demo setup: `./scripts/demo/complete-setup.sh https://your-vercel-url.vercel.app`
+4. Update this file with your real Vercel URL
+
+## Testing Instructions (For 2Checkout Review)
 1. Visit the live website URL
-2. Create a customer account or use provided credentials
+2. Login with provided demo credentials
 3. Browse products and add items to cart
 4. Test the complete checkout flow with 2Checkout
 5. Login as admin to review backend functionality
